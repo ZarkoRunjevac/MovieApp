@@ -2,6 +2,7 @@ package com.example.zarkorunjevac.movieapp.adapters;
 
 import static com.example.zarkorunjevac.movieapp.R.id.tvOverview;
 import static com.example.zarkorunjevac.movieapp.R.id.tvTitle;
+import static java.lang.System.load;
 
 import android.content.Context;
 import android.content.res.Configuration;
@@ -69,9 +70,15 @@ public class MovieArrayAdapter extends ArrayAdapter<Movie> {
         viewHolder.ivImage.setImageResource(0);
         int orientation = mContext.get().getResources().getConfiguration().orientation;
         if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-            Picasso.with(getContext()).load(movie.getPosterPath()).into(viewHolder.ivImage);
+            Picasso.with(getContext())
+                .load(movie.getPosterPath())
+                .placeholder(R.drawable.placeholder)
+                .into(viewHolder.ivImage);
         }else if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            Picasso.with(getContext()).load(movie.getBackdropPath()).into(viewHolder.ivImage);
+            Picasso.with(getContext())
+                .load(movie.getBackdropPath())
+                .placeholder(R.drawable.placeholder)
+                .into(viewHolder.ivImage);
         }
 
         return convertView;
