@@ -4,8 +4,10 @@ import static com.example.zarkorunjevac.movieapp.R.id.tvOverview;
 import static com.example.zarkorunjevac.movieapp.R.id.tvTitle;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,7 @@ import com.example.zarkorunjevac.movieapp.R;
 import com.example.zarkorunjevac.movieapp.model.Movie;
 import com.squareup.picasso.Picasso;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 /**
@@ -27,6 +30,7 @@ import java.util.List;
 public class MovieArrayAdapter extends ArrayAdapter<Movie> {
 
     private static final String TAG= MovieListActivity.class.getCanonicalName();
+    private final WeakReference<Context> mContext;
 
     private static class ViewHolder{
         TextView tvTitle;
@@ -36,6 +40,7 @@ public class MovieArrayAdapter extends ArrayAdapter<Movie> {
 
     public MovieArrayAdapter(Context context, List<Movie> movies){
         super(context, android.R.layout.simple_list_item_1,movies);
+        mContext=new WeakReference<Context>(context);
     }
 
     @NonNull
@@ -57,17 +62,17 @@ public class MovieArrayAdapter extends ArrayAdapter<Movie> {
             viewHolder=(ViewHolder)convertView.getTag();
         }
 
-
-
-        viewHolder.ivImage.setImageResource(0);
-
-
-
         viewHolder.tvTitle.setText(movie.getOriginalTitle());
 
         viewHolder.tvOverview.setText(movie.getOverview());
 
-        Picasso.with(getContext()).load(movie.getPosterPath()).into(viewHolder.ivImage);
+        viewHolder.ivImage.setImageResource(0);
+        int orientation = mContext.get().getResources().getConfiguration().orientation;
+        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+            Picasso.with(getContext()).load(movie.getPosterPath()).into(viewHolder.ivImage);
+        }else if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            Picasso.with(getContext()).load(movie.getBackdropPath()).into(viewHolder.ivImage);
+        }
 
         return convertView;
     }

@@ -40,6 +40,7 @@ public class Movie {
         this.posterPath=jsonObject.getString("poster_path");
         this.originalTitle=jsonObject.getString("original_title");
         this.overview=jsonObject.getString("overview");
+        this.backdropPath=jsonObject.getString("backdrop_path");
     }
 
     public static ArrayList<Movie> fromJSONARRay(JSONArray array){
@@ -137,7 +138,8 @@ public class Movie {
     }
 
     public String getBackdropPath() {
-        return backdropPath;
+        return String.format("https://image.tmdb.org/t/p/w342%s",backdropPath);
+
     }
 
     public void setBackdropPath(String backdropPath) {
