@@ -11,6 +11,7 @@
     android:layout_alignParentLeft="true"
     android:layout_alignParentStart="true"
     android:layout_alignParentTop="true"
+    android:padding="8dp"
     tools:src="@mipmap/ic_launcher"
     />
 
@@ -18,7 +19,7 @@
     android:id="@+id/tvTitle"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:textAppearance="?android:attr/textAppearanceLarge"
+    android:textAppearance="@style/Todo.TextAppearance.Title"
     tools:text="Annabelle: Creation"
     android:layout_alignParentTop="true"
     android:layout_toEndOf="@+id/ivMovieImage"
@@ -32,7 +33,8 @@
     android:layout_below="@+id/tvTitle"
     android:layout_toEndOf="@+id/ivMovieImage"
     android:layout_toRightOf="@+id/ivMovieImage"
-
+    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+    android:textColor="@color/colorText"
     tools:text="Several years after the tragic death of their little girl, a dollmaker and his wife welcome a nun and several girls from a shuttered orphanage into their home, soon becoming the target of the dollmaker's possessed creation, Annabelle." />
 
 </RelativeLayout>
