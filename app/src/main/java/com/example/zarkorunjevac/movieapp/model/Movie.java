@@ -41,6 +41,7 @@ public class Movie {
         this.originalTitle=jsonObject.getString("original_title");
         this.overview=jsonObject.getString("overview");
         this.backdropPath=jsonObject.getString("backdrop_path");
+        this.voteAverage=jsonObject.getDouble("vote_average");
     }
 
     public static ArrayList<Movie> fromJSONARRay(JSONArray array){
@@ -55,6 +56,10 @@ public class Movie {
         }
 
         return movies;
+    }
+
+    public boolean isPopular(){
+        return voteAverage>5;
     }
 
     public Integer getVoteCount() {

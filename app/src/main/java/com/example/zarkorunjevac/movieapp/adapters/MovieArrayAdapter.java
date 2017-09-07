@@ -52,8 +52,9 @@ public class MovieArrayAdapter extends ArrayAdapter<Movie> {
         ViewHolder viewHolder;
         if(convertView==null){
             viewHolder=new ViewHolder();
+
             LayoutInflater inflater=LayoutInflater.from(getContext());
-            convertView=inflater.inflate(R.layout.item_movie,parent,false);
+            convertView=getLayout(movie);
             viewHolder.tvTitle=(TextView)convertView.findViewById(tvTitle);
             viewHolder.tvOverview=(TextView)convertView.findViewById(tvOverview);
             viewHolder.ivImage=(ImageView)convertView.findViewById(R.id.ivMovieImage);
@@ -70,17 +71,42 @@ public class MovieArrayAdapter extends ArrayAdapter<Movie> {
         viewHolder.ivImage.setImageResource(0);
         int orientation = mContext.get().getResources().getConfiguration().orientation;
         if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-            Picasso.with(getContext())
-                .load(movie.getPosterPath())
-                .placeholder(R.drawable.placeholder)
-                .into(viewHolder.ivImage);
-        }else if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+          if(movie.isPopular()){
             Picasso.with(getContext())
                 .load(movie.getBackdropPath())
                 .placeholder(R.drawable.placeholder)
                 .into(viewHolder.ivImage);
+          }else{
+            Picasso.with(getContext())
+                .load(movie.getPosterPath())
+                .placeholder(R.drawable.placeholder)
+                .into(viewHolder.ivImage);
+          }
+
+        }else if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+          if(movie.isPopular()){
+            Picasso.with(getContext())
+                .load(movie.getBackdropPath())
+                .placeholder(R.drawable.placeholder)
+                .into(viewHolder.ivImage);
+          }else{
+            Picasso.with(getContext())
+                .load(movie.getPosterPath())
+                .placeholder(R.drawable.placeholder)
+                .into(viewHolder.ivImage);
+          }
         }
 
         return convertView;
+    }
+
+    private View getLayout(Movie movie){
+      if(movie.isPopular()){
+        LayoutInflater inflater=LayoutInflater.from(getContext());
+        return inflater.from(mContext.get()).inflate(R.layout.item_popular_movie,null);
+      }else{
+        LayoutInflater inflater=LayoutInflater.from(getContext());
+        return inflater.from(mContext.get()).inflate(R.layout.item_movie,null);
+      }
     }
 }
