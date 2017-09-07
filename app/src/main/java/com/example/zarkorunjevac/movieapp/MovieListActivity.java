@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListView;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import com.example.zarkorunjevac.movieapp.adapters.MovieArrayAdapter;
 import com.example.zarkorunjevac.movieapp.model.Movie;
 import com.example.zarkorunjevac.movieapp.utils.Config;
@@ -21,46 +23,48 @@ import cz.msebera.android.httpclient.Header;
 
 public class MovieListActivity extends AppCompatActivity {
 
-    private static final String TAG=MovieListActivity.class.getCanonicalName();
+  private static final String TAG = MovieListActivity.class.getCanonicalName();
 
-    private ArrayList<Movie> movies;
+  private ArrayList<Movie> movies;
 
-    private MovieArrayAdapter mMovieArrayAdapter;
+  private MovieArrayAdapter mMovieArrayAdapter;
 
-    private ListView mMovieList;
+  @BindView(R.id.lstMovies)
+  ListView mMovieList;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_movie_list);
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_movie_list);
+    ButterKnife.bind(this);
+    movies = new ArrayList<>();
 
-        movies=new ArrayList<>();
-        mMovieList=(ListView)findViewById(R.id.lstMovies);
-        mMovieArrayAdapter=new MovieArrayAdapter(this, movies);
-        mMovieList.setAdapter(mMovieArrayAdapter);
+    mMovieArrayAdapter = new MovieArrayAdapter(this, movies);
+    mMovieList.setAdapter(mMovieArrayAdapter);
 
-        AsyncHttpClient client=new AsyncHttpClient();
+    AsyncHttpClient client = new AsyncHttpClient();
 
-        client.get(Config.URL, new JsonHttpResponseHandler(){
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                JSONArray movieJsonArray=null;
+    client.get(Config.URL, new JsonHttpResponseHandler() {
+      @Override
+      public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+        JSONArray movieJsonArray = null;
 
-               try {
-                   movieJsonArray=response.getJSONArray("results");
-                   movies.addAll(Movie.fromJSONARRay(movieJsonArray));
-                   mMovieArrayAdapter.notifyDataSetChanged();
+        try {
+          movieJsonArray = response.getJSONArray("results");
+          movies.addAll(Movie.fromJSONARRay(movieJsonArray));
+          mMovieArrayAdapter.notifyDataSetChanged();
 
-               }catch (JSONException e){
-                   Log.e(TAG, "onSuccess: ", e);
-               }
+        } catch (JSONException e) {
+          Log.e(TAG, "onSuccess: ", e);
+        }
 
-            }
+      }
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                super.onFailure(statusCode, headers, responseString, throwable);
-            }
-        });
-    }
+      @Override
+      public void onFailure(int statusCode, Header[] headers, String responseString,
+          Throwable throwable) {
+        super.onFailure(statusCode, headers, responseString, throwable);
+      }
+    });
+  }
 }
