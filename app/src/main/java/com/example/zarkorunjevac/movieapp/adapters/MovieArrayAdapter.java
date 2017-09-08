@@ -28,6 +28,7 @@ import com.squareup.picasso.Picasso;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
+import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
 /**
  * Created by zarkorunjevac on 04/09/17.
@@ -91,11 +92,13 @@ public class MovieArrayAdapter extends ArrayAdapter<Movie> {
       if (movie.isPopular()) {
         Picasso.with(getContext())
             .load(movie.getBackdropPath())
+            .transform(new RoundedCornersTransformation(10, 10))
             .placeholder(R.drawable.placeholder)
             .into(viewHolder.ivImage);
       } else {
         Picasso.with(getContext())
             .load(movie.getPosterPath())
+            .transform(new RoundedCornersTransformation(10, 10))
             .placeholder(R.drawable.placeholder)
             .into(viewHolder.ivImage);
       }
@@ -104,11 +107,13 @@ public class MovieArrayAdapter extends ArrayAdapter<Movie> {
       if (movie.isPopular()) {
         Picasso.with(getContext())
             .load(movie.getBackdropPath())
+            .transform(new RoundedCornersTransformation(10, 10))
             .placeholder(R.drawable.placeholder)
             .into(viewHolder.ivImage);
       } else {
         Picasso.with(getContext())
             .load(movie.getPosterPath())
+            .transform(new RoundedCornersTransformation(10, 10))
             .placeholder(R.drawable.placeholder)
             .into(viewHolder.ivImage);
       }
