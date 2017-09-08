@@ -5,12 +5,14 @@ import static com.example.zarkorunjevac.movieapp.R.id.tvTitle;
 import static java.lang.System.load;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -21,6 +23,7 @@ import butterknife.ButterKnife;
 import com.example.zarkorunjevac.movieapp.MovieListActivity;
 import com.example.zarkorunjevac.movieapp.R;
 import com.example.zarkorunjevac.movieapp.model.Movie;
+import com.example.zarkorunjevac.movieapp.ui.activity.MovieDetailActivity;
 import com.squareup.picasso.Picasso;
 
 import java.lang.ref.WeakReference;
@@ -58,7 +61,7 @@ public class MovieArrayAdapter extends ArrayAdapter<Movie> {
   @Override
   public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
-    Movie movie = getItem(position);
+    final Movie movie = getItem(position);
     ViewHolder viewHolder;
     if (convertView == null) {
 
@@ -66,6 +69,14 @@ public class MovieArrayAdapter extends ArrayAdapter<Movie> {
       convertView = getLayout(movie);
       viewHolder = new ViewHolder(convertView);
       convertView.setTag(viewHolder);
+      convertView.setOnClickListener(new OnClickListener() {
+        @Override
+        public void onClick(View view) {
+          Intent intent=new Intent(mContext.get(), MovieDetailActivity.class);
+          intent.putExtra("movie",movie);
+          mContext.get().startActivity(intent);
+        }
+      });
     } else {
       viewHolder = (ViewHolder) convertView.getTag();
     }

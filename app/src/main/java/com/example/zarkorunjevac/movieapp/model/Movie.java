@@ -6,6 +6,7 @@ package com.example.zarkorunjevac.movieapp.model;
 
 import android.util.Log;
 
+import java.io.Serializable;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,7 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Movie {
+public class Movie  implements Serializable{
 
     private static final String TAG=Movie.class.getCanonicalName();
 
