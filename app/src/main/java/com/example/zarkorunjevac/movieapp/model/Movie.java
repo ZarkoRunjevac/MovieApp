@@ -6,11 +6,11 @@ package com.example.zarkorunjevac.movieapp.model;
 
 import android.util.Log;
 
-import java.io.Serializable;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +34,14 @@ public class Movie  implements Serializable{
     private Boolean adult;
     private String overview;
     private String releaseDate;
+
+    public enum Type {
+        POPULAR, REGULAR
+    }
+
+
+
+    private String youTubeUrl;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
 
@@ -43,6 +51,7 @@ public class Movie  implements Serializable{
         this.overview=jsonObject.getString("overview");
         this.backdropPath=jsonObject.getString("backdrop_path");
         this.voteAverage=jsonObject.getDouble("vote_average");
+        this.id=jsonObject.getInt("id");
     }
 
     public static ArrayList<Movie> fromJSONARRay(JSONArray array){
@@ -57,6 +66,11 @@ public class Movie  implements Serializable{
         }
 
         return movies;
+    }
+
+    public Type getType(){
+        if(this.isPopular()) return Type.POPULAR;
+        else return Type.REGULAR;
     }
 
     public boolean isPopular(){
@@ -182,6 +196,14 @@ public class Movie  implements Serializable{
 
     public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
+    }
+
+    public String getYouTubeUrl() {
+        return youTubeUrl;
+    }
+
+    public void setYouTubeUrl(String youTubeUrl) {
+        this.youTubeUrl = youTubeUrl;
     }
 
 }

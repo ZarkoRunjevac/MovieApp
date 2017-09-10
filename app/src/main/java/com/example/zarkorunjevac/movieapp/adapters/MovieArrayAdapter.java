@@ -1,9 +1,5 @@
 package com.example.zarkorunjevac.movieapp.adapters;
 
-import static com.example.zarkorunjevac.movieapp.R.id.tvOverview;
-import static com.example.zarkorunjevac.movieapp.R.id.tvTitle;
-import static java.lang.System.load;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -18,16 +14,18 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import com.example.zarkorunjevac.movieapp.MovieListActivity;
+import com.example.zarkorunjevac.movieapp.ui.activity.MovieListActivity;
 import com.example.zarkorunjevac.movieapp.R;
 import com.example.zarkorunjevac.movieapp.model.Movie;
 import com.example.zarkorunjevac.movieapp.ui.activity.MovieDetailActivity;
+import com.example.zarkorunjevac.movieapp.ui.activity.YouTubeActivity;
 import com.squareup.picasso.Picasso;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
 /**
@@ -58,6 +56,18 @@ public class MovieArrayAdapter extends ArrayAdapter<Movie> {
     mContext = new WeakReference<Context>(context);
   }
 
+  @Override
+  public int getViewTypeCount() {
+    return Movie.Type.values().length;
+  }
+
+  @Override
+  public int getItemViewType(int position) {
+    return getItem(position).getType().ordinal();
+  }
+
+
+
   @NonNull
   @Override
   public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -66,21 +76,35 @@ public class MovieArrayAdapter extends ArrayAdapter<Movie> {
     ViewHolder viewHolder;
     if (convertView == null) {
 
-      LayoutInflater inflater = LayoutInflater.from(getContext());
-      convertView = getLayout(movie);
+      int type=getItemViewType(position);
+
+      convertView = getInflatedLayoutForType(type);
       viewHolder = new ViewHolder(convertView);
       convertView.setTag(viewHolder);
-      convertView.setOnClickListener(new OnClickListener() {
-        @Override
-        public void onClick(View view) {
-          Intent intent=new Intent(mContext.get(), MovieDetailActivity.class);
-          intent.putExtra("movie",movie);
-          mContext.get().startActivity(intent);
-        }
-      });
+
     } else {
       viewHolder = (ViewHolder) convertView.getTag();
     }
+
+    convertView.setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        Intent intent=new Intent(mContext.get(), MovieDetailActivity.class);
+        intent.putExtra("movie",movie);
+        mContext.get().startActivity(intent);
+      }
+    });
+    if(movie.isPopular()){
+        viewHolder.ivImage.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(mContext.get(), YouTubeActivity.class);
+                intent.putExtra("movie",movie);
+                mContext.get().startActivity(intent);
+            }
+        });
+    }
+
 
     viewHolder.tvTitle.setText(movie.getOriginalTitle());
 
@@ -95,6 +119,7 @@ public class MovieArrayAdapter extends ArrayAdapter<Movie> {
             .transform(new RoundedCornersTransformation(10, 10))
             .placeholder(R.drawable.placeholder)
             .into(viewHolder.ivImage);
+        Log.d(TAG, "getView: "+movie.getBackdropPath());
       } else {
         Picasso.with(getContext())
             .load(movie.getPosterPath())
@@ -110,6 +135,7 @@ public class MovieArrayAdapter extends ArrayAdapter<Movie> {
             .transform(new RoundedCornersTransformation(10, 10))
             .placeholder(R.drawable.placeholder)
             .into(viewHolder.ivImage);
+
       } else {
         Picasso.with(getContext())
             .load(movie.getPosterPath())
@@ -122,13 +148,14 @@ public class MovieArrayAdapter extends ArrayAdapter<Movie> {
     return convertView;
   }
 
-  private View getLayout(Movie movie) {
-    if (movie.isPopular()) {
+  private View getInflatedLayoutForType(int type) {
+    if (type==Movie.Type.POPULAR.ordinal()) {
       LayoutInflater inflater = LayoutInflater.from(getContext());
       return inflater.from(mContext.get()).inflate(R.layout.item_popular_movie, null);
     } else {
       LayoutInflater inflater = LayoutInflater.from(getContext());
       return inflater.from(mContext.get()).inflate(R.layout.item_movie, null);
     }
+
   }
 }
