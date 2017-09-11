@@ -35,7 +35,7 @@ The following **bonus** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-<img src='https://i.imgur.com/irVHLJ4.gif' width="600" />
+<img src='https://i.imgur.com/irVHLJ4.gif' />
 <img src='https://i.imgur.com/PPyKDUH.gif'  />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
