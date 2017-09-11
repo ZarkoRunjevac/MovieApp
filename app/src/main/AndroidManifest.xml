@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.activity.MovieDetailActivity" />
-        <activity android:name=".ui.activity.YouTubeActivity"></activity>
+        <activity android:name=".ui.activity.YouTubeActivity" android:screenOrientation="landscape"></activity>
     </application>
 
 </manifest>
